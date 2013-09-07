@@ -1,0 +1,16 @@
+Welcome to *Protocol23: Mechanism of Exalted Publication*!
+
+This repository contains the *protocol23* SCons-based toolkit, for building
+books which are similar in form and appearance to the *Exalted* (2nd edition)
+range of books by White Wolf.
+
+For the moment these tools have only been tested on my machine (Mac OS 10.6),
+but should be usable on other Unix-alike systems with a little work.
+
+While I regard my part of this work as Public Domain / Kopyleft there are, as
+ever, some legal restrictions.  Being partly a derived work based on White
+Wolf's intellectual property, anyone (other than them) who tries to sell this
+is liable to hear from their lawyers.  On the other hand, some of the
+resources I've used--fonts and hyphenation information--are subject to ``open
+source'' licenses.  In particular, the OFFO hyphenation library contains files
+which must be renamed if modified.
