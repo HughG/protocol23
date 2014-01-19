@@ -1,6 +1,7 @@
 def Protocol23(env):
 
-    import imp, os, string, sys
+    import imp, os, string, sys, subprocess
+    from SCons import __version__
     from SCons.Script import COMMAND_LINE_TARGETS
     from SCons.Script.Main import AddOption
     from SCons.Defaults import Copy
@@ -46,8 +47,31 @@ def Protocol23(env):
             if tool_path is not None:
                 env[tool_key] = tool_path
 
-    for exe in ['GIT', 'RUBY', 'DOT', 'XSLT', 'ASCIIDOC', 'A2X']:
+    def print_version(env, tool_key, tool_name=None):
+        version_arg = "--version"
+        version_arg_key = tool_key + "_VERSION_ARG"
+        if version_arg_key in env:
+            version_arg = env[version_arg_key]
+        #os.spawnl(os.P_WAIT, env[tool_key], env[tool_key], version_arg)
+        p = subprocess.Popen(
+            [env[tool_key], version_arg],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT
+            )
+        (stdoutdata, _stderrdata) = p.communicate()
+        print stdoutdata
+    
+    if not 'DOT_VERSION_ARG' in env:
+        env['DOT_VERSION_ARG'] = "-V"
+    if not 'JAVA_VERSION_ARG' in env:
+        env['JAVA_VERSION_ARG'] = "-version"
+    print "SCons version " + __version__
+    print
+    print "Python version " + sys.version
+    print
+    for exe in ['GIT', 'JAVA', 'RUBY', 'DOT', 'XSLT', 'ASCIIDOC', 'A2X']:
         default_executable_from_path(env, exe)
+        print_version(env, exe)
 
     env['SCRIPT_SUFFIX'] = 'bat' if env['PLATFORM'] == 'win32' else 'sh'
 

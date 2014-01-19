@@ -1,11 +1,85 @@
 Welcome to *Protocol23: Mechanism of Exalted Publication*!
 
+== What is this?
+
 This repository contains the *protocol23* SCons-based toolkit, for building
 books which are similar in form and appearance to the *Exalted* (2nd edition)
 range of books by White Wolf.
 
+== What does it do?
+
+Protocol23 processes input in the AsciiDoc format to produce PDFs similar in
+structure and appearance to those in White Wolf's Exalted series.  Charms are
+handled specially, being written in YAML files which contain each Charm's
+information in a machine-readable form, plus the Charm text in AsciiDoc.  This
+allows several extra kinds of processing which are helpful in development.
+
+* In the final PDF (which can take a few minutes to produce),
+** produce Charm tree diagrams which closely follow the style in the original
+books; and
+** automatically produce indices of Charms, not only by trait group but by
+other "tags" you choose to add.
+* Quickly produce an HTML frameset document containing the text for each group
+of Charms, plus a rough Charm tree which is laid out automatically, to allow
+you to sanity-check the prerequisites.
+* Produce an interactive, draggable Charm tree diagram using HTML and
+JavaScript, to try out alternative layouts.
+* Receive informative error messages for some common mistakes (e.g., one or
+more of a Charm's prerequisites require higher trait minimums than the Charm
+itself.
+* Receive obscure and confusing error messages if anything else goes wrong.
+(Okay, this is less helpful ...)
+
+== How to use Protocol23
+
 For the moment these tools have only been tested on my machine (Mac OS 10.6),
-but should be usable on other Unix-alike systems with a little work.
+but should be usable on other Unix-alike systems with a little work.  See
+https://github.com/HughG/Discordians for an example of how it has been used.
+
+=== Installing the prerequisites
+
+Protocol23 depends on a number of tools, which have been tested at the
+following versions.
+
+* SCons 2.2.0
+* Python 2.7.3
+* git 1.8.2.1
+* Java 1.6.0
+* ruby 1.9.3p392
+* dot 1.13 (from the Graphviz package)
+* xsltproc (using libxml 20900, libxslt 10127 and libexslt 816)
+* AsciiDoc 8.6.8
+
+=== Setting up a new project
+
+To use Protocol23 for your own project, do the following.
+
+. Create a git repository for your project.
+. Create a top-level +SConstruct+ file , similar to the one in the Discordians
+project.  All you need to change is the +PROJECT_NAME+ definition.  This
+variable controls the main input and output filenames.
+. Create a folder +SConsLocal+, similar to the one in the Discordians project.
+This should contain but ignore a file +Config.py+, which gives paths to the
+necessary programs on your system.  You can use +Config_MacOS_macports.py+ as
+a template.  (This folder also needs to include the +__init__.py+ file.)
+. Create a folder hierarchy +src/text/book+, and in the +book+ folder, create
+** +'PROJECT_NAME'.asc+, the main AsciiDoc source file for your project; and
+** +'PROJECT_NAME'-docinfo.in.xml+, a document information template (into
+which git revision information will be inserted when you build).
+. Create a folder hierarchy +src/text/charms+, and in the +charms+ folder,
+create files +'G_I_Trait'.yml+ for each group of Charms, where +'G'+ is a
+digit indicating the order of the group in the output, and +'I'+ is a digit
+indicating the order within the group.
+
+=== Building your project
+
+In the root folder of your project, run +scons --help+ to see the available
+build targets.  These include the following.
+
+* +scons pdf+ to build the final PDF
+* +scons html+ to build the HTML frameset of Charms
+
+== License
 
 While I regard my part of this work as Public Domain / Kopyleft there are, as
 ever, some legal restrictions.  Being partly a derived work based on White
