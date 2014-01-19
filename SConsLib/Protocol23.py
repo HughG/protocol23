@@ -46,8 +46,10 @@ def Protocol23(env):
             if tool_path is not None:
                 env[tool_key] = tool_path
 
-    for exe in ['RUBY', 'DOT', 'XSLT', 'ASCIIDOC', 'A2X']:
+    for exe in ['GIT', 'RUBY', 'DOT', 'XSLT', 'ASCIIDOC', 'A2X']:
         default_executable_from_path(env, exe)
+
+    env['SCRIPT_SUFFIX'] = 'bat' if env['PLATFORM'] == 'win32' else 'sh'
 
     ShowParseProgress("done default tools")
 
@@ -278,7 +280,7 @@ def Protocol23(env):
     version_info_in = env.Command(
         'build/version_info.in.txt',
         [],
-        './src/protocol23/tools/version-info/describe-git-status.bash >$TARGET'
+        './src/protocol23/tools/version-info/describe-git-status.$SCRIPT_SUFFIX $GIT $TARGET'
     )
     # AlwaysBuild really means "always build if directly or indirectly specified
     # as a target".  The point is that it ignores the up-to-date status of its
